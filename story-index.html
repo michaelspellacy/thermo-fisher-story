@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="css/global.css"/>
+    <script>document.getElementsByTagName("html")[0].className = document.getElementsByTagName("html")[0].className.replace("no-js", "js");</script>
+    <title>Story Gallery - Thermo Fisher Scientific</title>
+</head>
+
+<body>
+
+	<article>
+	
+		<div id="story-gallery">
+
+			<h2 class="story-primary-heading">Our Stories</h2>
+
+			<ul id="story-list">
+				<li id="story-inspiration" class="story-item story-inspiration"><a href="story-inspiration/index.html" class="story-item-link"><b class="story-label">Inspiration</b></a></li>
+  				<li id="story-momentum" class="story-item story-momentum"><a href="story-momentum/index.html" class="story-item-link"><b class="story-label">Momentum</b></a></li>
+   				<li id="story-health" class="story-item story-health"><a href="story-health/index.html" class="story-item-link"><b class="story-label">Health</b></a></li>
+  				<li id="story-investment" class="story-item story-investment"><a href="story-investment/index.html" class="story-item-link"><b class="story-label">Investment</b></a></li>
+  				<li id="story-protection" class="story-item story-protection"><a href="story-protection/index.html" class="story-item-link"><b class="story-label">Protection</b></a></li>
+  				<li id="story-justice" class="story-item story-justice"><a href="story-justice/index.html" class="story-item-link"><b class="story-label">Justice</b></a></li>
+  				<li id="story-progress" class="story-item story-progress"><a href="story-progress/index.html" class="story-item-link"><b class="story-label">Progress</b></a></li>
+  				<li id="story-authenticity" class="story-item story-authenticity" class="story-item-link"><a href="story-authenticity/index.html" class="story-item-link"><b class="story-label">Authenticity</b></a></li>
+    		</ul>
+
+		</div>
+
+	</article>
+
+	<script src="https://tbcdn.talentbrew.com/bundles/tb-core"></script>
+	<script src="js/_theme.js"></script>
+
+	<script>
+
+	// Story Gallery by Michael "Spell" Spellacy, King of Siam.
+
+	var storyList = $("#story-list");
+	var storyItem = $(".story-item");
+	var loadElement = "story-loading";
+	var loadMsg = "Story Loading...";
+
+	function prepPanel(element) {
+
+		element.append("<button class=\"story-close\" type=\"button\">Close Profile</button>");
+		element.find(".story-heading").attr("tabindex", "-1").focus();
+		$("." + loadElement).removeAttr("tabindex");
+
+	}
+
+	function closePanel(element) {
+
+		$(".story-close").on("click", function(){
+
+			element.parent().removeClass("active").addClass("inactive");
+			
+			element.parent().find("." + loadElement).removeClass("active");
+		 
+		 });
+
+	}
+
+	// Load Initial Images
+
+	storyItem.filter(":visible").each(function() {
+
+		$(this).addClass("story-visible");
+
+	});
+
+	// Load Individual Story
+
+	storyItem.find(".story-item-link").on("click", function(){
+
+		storyItem.removeClass("active").addClass("inactive"); // Swap classes on all list items. 
+
+		$(this).parent().removeClass("inactive").addClass("active"); // The swap again on clicked on list item. A class of active, means it is hidden. 
+
+		// Now, let's pull in our content from standalone page...
+
+		// But first, close any open content panels
+
+			$("." + loadElement).removeClass("active");
+
+		if (!$(this).parent().find("." + loadElement).length) {
+
+			// If loading container does not exist, then make ajax call to standalone page and pull in content...
+
+			// Then load in content...
+
+			$(this).parent().append("<div class=" + loadElement + " tabindex=\"0\"><b class=\"story-status\"><span>" + loadMsg + "</span></b></div>");
+			$(this).parent().find("." + loadElement).addClass("active").focus().load(this.href.split('#')[0] + " #story-content > *", function() {
+
+				$this = $(this);
+
+				prepPanel($this);
+
+				closePanel($this);
+
+			});
+			
+		} else {
+
+			$(this).parent().find("." + loadElement).addClass("active");
+
+		}
+
+		$("html, body").animate({scrollTop: $("#" + $(this).parent().attr("id")).offset().top}, "slow");
+
+		return false;
+
+	});
+
+	// Load Gallery Button (we load this in JS because it is not needed if script is broken or disabled)
+
+	listSize = storyItem.size();
+
+	minListSize = 4;
+
+	if(listSize > minListSize) {
+
+	$("#story-gallery").append("<div id=\"story-load-more\"><button class=\"story-load-button\" type=\"button\">Load more stories</button></div>");
+
+	}
+  
+  	// Load More Stories
+
+    $(".story-load-button").on("click", function(){
+        
+        minListSize = (minListSize + 4 <= listSize) ? minListSize + 4 : listSize;
+        
+        storyItem.filter(":lt(" + minListSize + ")").show().each(function() {
+
+			$(this).addClass("story-visible");
+
+		});
+
+        if(minListSize == listSize){
+
+            $(this).attr("disabled", "true");
+            $(this).text("All stories available");
+        
+        }
+    
+    }); 
+
+    // End Story Gallery
+   
+	</script>
+
+</body>
+</html>

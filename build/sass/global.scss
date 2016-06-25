@@ -1,0 +1,1093 @@
+/*! Thermo Fisher Scientific Story Gallery, Developer: Michael "Spell" Spellacy, @spellacy */
+
+@import "utilities/normalize.scss"; // Remove before using on TB
+
+// Global Variables
+
+$primary-color: rgb(246, 141, 45);
+$secondary-color: rgb(119, 152, 32);
+$tertiary-color: rgb(229, 232, 235);
+$color-percentage: 15%;
+
+// Local Functions 
+
+// Relative Media Queries
+
+@function pem($pixels) {
+
+  @return #{$pixels/16.0}em
+
+}
+
+// Divide font size value by base font size of 16
+
+@function px($target) {
+
+	@return #{$target/16.0}rem
+
+}
+
+// Local Breakpoints - Calling my breakpoint, "break" as to not conflict with Plum's baseline breakpoint functions in TB.
+
+@mixin break($point) {
+
+	@if $point == palpatine {
+
+		@media (min-width: pem(1300)) {
+
+			@content; 
+
+		}
+
+	}
+
+	@else if $point == vader {
+
+		@media (min-width: pem(1200)) {
+
+			@content; 
+
+		}
+
+	}
+
+	@else if $point == solo {
+
+		@media (min-width: pem(900)) {
+
+			@content; 
+
+		}
+
+	}
+
+	@else if $point == skywalker {
+
+		@media (min-width: pem(768)) {
+
+			@content; 
+
+		}
+
+	}
+
+	@else if $point == threepio {
+
+		@media (min-width: pem(540)) {
+
+			@content; 
+
+		}
+
+	}
+
+	@else if $point == artoo {
+
+		@media (min-width: pem(420)) {
+
+			@content; 
+
+		}
+
+	}
+
+}
+
+// Local Placeholders
+
+%clearfix {
+	
+	&:after {
+	clear: both; 
+	content: "."; 
+	display: block; 
+	height: 0; 
+	visibility: hidden;
+	}
+
+}
+
+// Used to accessibly hide elements (display: none may cause issues with screen readers)
+
+%wai {
+	
+	height: 0;
+	left: 0;
+	position: absolute;
+	text-indent: -999em;
+	top: 0;
+	width: 0;
+
+}
+
+// Animation
+
+@keyframes generic-reveal {
+
+  0%{
+  opacity: 0;
+  }
+
+  100%{
+  opacity: 1;
+  }
+
+}
+
+@keyframes animate-dots {
+
+  0%{
+  opacity: .5;
+  width: 0;
+  }
+
+  100%{
+  opacity: 1;
+  width:100%;
+  }
+
+}
+
+@keyframes grow-up-big-boy {
+
+  0%{
+  bottom: -200px;
+  opacity: 0;
+  }
+
+  100%{
+  bottom: 0;
+  opacity: 1;
+  }
+
+}
+
+// Global Styles and Overrides (if needed)
+
+html {
+box-sizing: border-box;
+}
+
+body {
+margin: 0;
+}
+
+*, *:before, *:after {
+box-sizing: inherit;
+}
+
+*[aria-hidden="true"]{
+display: none;
+}
+
+body {
+font: 300 100%/1.6 Arial, "Helvetica Neue", Helvetica, sans-serif;
+-webkit-font-smoothing: antialiased;
+} 
+
+a:link, a:active, a:visited {
+text-decoration: none;
+}
+
+select::-ms-expand {
+display: none !important;
+}
+
+::-webkit-input-placeholder {
+color: rgb(136, 139, 141);
+}
+
+::-moz-placeholder {
+color: rgb(136, 139, 141);  
+}
+
+:-ms-input-placeholder {  
+color: rgb(136, 139, 141);  
+}
+
+input:not([type="checkbox"]), select, button {
+border-radius: 0;
+box-sizing: border-box;
+line-height: normal;
+-webkit-appearance: none;
+}
+
+select {
+-moz-appearance: none;
+}
+
+img, video {
+border: 0;
+display: block;
+max-width: 100%;
+}
+
+// Story Gallery by Michael "Spell" Spellacy, Esq.
+
+// Gallery Variables
+
+$background-left-offset: 40%;
+$gallery-break: 880px;
+$initial-load: 4;
+
+// Loading Animation
+
+@keyframes pulsate {
+ 
+    0% {
+    opacity: 1;
+    }
+    
+    100% { 
+    opacity: 0;
+    }
+
+}
+
+#story-gallery {
+
+	*[aria-hidden="true"]{
+	display: none;
+	}
+
+	.story-primary-heading {
+	@extend %wai;
+	}
+
+	#story-list {
+	list-style: none;
+	margin: 0;
+	min-width: 320px;
+	padding: 0;
+	}
+
+}
+
+#story-content {
+padding-top: 45%;
+		
+	@media (min-width: $gallery-break){
+
+		padding-top: 0;
+
+	}
+
+}
+
+.story-item {
+border-bottom: 4px #fff solid;
+position: relative;
+
+	.js & {
+
+		padding-top: 25%;
+
+		@media (min-width: $gallery-break){
+
+			padding-top: 0;
+
+		}
+
+	}
+
+	&.active {
+	padding-top: 45%;
+		
+		@media (min-width: $gallery-break){
+
+			padding-top: 0;
+
+		}
+
+		a:first-child {
+
+			.js & {
+
+				display: none;
+
+			}
+
+		}
+
+	}
+
+	&:nth-child(n+#{$initial-load + 1}) {
+
+		.js & {
+
+			display: none;
+
+		}
+
+	}
+
+}
+
+.story-item, #story-content {
+background-repeat: no-repeat;
+background-size: 100%;
+box-sizing: border-box;
+font-size: 0.9rem;
+line-height: 1.6;
+-webkit-font-smoothing: antialiased;
+
+	*, *:before, *:after {
+	box-sizing: inherit;
+	}
+
+	@media (min-width: $gallery-break){
+
+		background-position: $background-left-offset 0; // Default (override may be needed for individual image);
+		background-size: cover;
+		font-size: 1vw;
+
+	}
+
+}
+
+.story-item-link {
+display: block;
+position: relative;
+
+	&:focus, &:hover {
+	text-decoration: none;
+	
+		.story-label {
+		background-color: rgb(42,56,93);
+		text-shadow: 0 0 20px rgba(0,0,0, 0.6);
+		}
+
+		&:after {
+		transform: scale(1.2);
+		}
+
+	}
+
+}
+
+.story-item-link:after, .story-close {
+background-color: transparent;
+background-position: center;
+background-repeat: no-repeat;
+background-size: 75%;
+border-color: rgb(255, 255, 255);
+border-radius: 50%;
+border-style: solid;
+border-width: 2px;
+box-shadow: 0 0 5px 5px rgba(0,0,0,0.1), inset 0 0 5px 5px rgba(0,0,0,0.1);
+content: "";
+display: block;
+height: 30px;
+margin: 0;
+outline: 0;
+padding: 0;
+position: absolute;
+right: 3%;
+text-indent: -999em;
+transition: all 0.1s linear;
+width: 30px;
+
+	@media (min-width: $gallery-break){
+
+		height: 45px;
+		width: 45px;
+
+	}
+
+	&:focus, &:hover {
+
+		transform: scale(1.2);
+	
+	}
+
+}
+
+.story-item-link:after {
+background-image: inline-image("btn-open.png");
+margin-top: -15px;
+top: 50%;
+
+	@media (min-width: $gallery-break){
+
+		margin-top: -25px;
+
+	}
+
+}
+
+.story-close {
+background-image: inline-image("btn-close.png");
+top: 2%;
+
+	@media (min-width: $gallery-break){
+
+		top: 5%;
+
+	}
+
+}
+
+.story-label, .story-status {
+display: block;
+font-size: 1.2rem;
+font-weight: bold;
+line-height: normal;
+padding: 0.8em 1em;
+text-transform: uppercase;
+transition: all 0.3s linear;
+	
+	.js & {
+
+		@media (min-width: $gallery-break){
+
+			width: 50%;
+
+		}
+
+		@media (min-width: $gallery-break){
+
+			padding: 1em 1.5em;
+
+		}
+
+	}
+
+	@media (min-width: $gallery-break){
+
+		font-size: 3vw;
+
+	}
+
+}
+
+.story-label {
+background-color: rgba(42,56,93,0.7);
+color: #fff;
+
+	&:after {
+	content: ".";
+	}
+
+}
+
+.story-status {
+background-color: rgba(255, 255, 255, 0.9);
+color: rgba(42,56,93,0.9);
+
+	span {
+	animation: pulsate 1.5s ease-in-out infinite;
+	display: block;
+	}
+
+}
+
+.story-article {
+background-color: rgba(42, 56, 93, 1);
+color: #fff;
+padding: 2em 1.5em;
+
+	@media (min-width: $gallery-break){
+
+		background-color: rgba(42, 56, 93, 0.7);
+		padding: 5em 4em 2.5em;
+		width: 50%;
+
+	}
+
+	a {
+	text-decoration: none;
+	transition: all 0.1s linear;
+	}
+
+	.story-pullquote {
+	margin: 0;
+	padding: 0;
+
+		.story-heading {
+		border-top: 6px rgb(238, 49, 52) solid;
+		color: #fff;
+		font-size: 1rem;
+		font-weight: normal;
+		line-height: 1;
+		margin: 0;
+		padding: 0;
+		padding-top: 0.3em;
+		text-transform: uppercase;
+
+			@media (min-width: $gallery-break){
+
+				font-size: 2.5vw;
+
+			}
+
+			&:focus {
+			outline: 0;
+			}
+
+			strong {
+			display: block;
+			font-size: 2rem;
+
+				@media (min-width: $gallery-break){
+
+					font-size: 4vw;
+
+				}
+
+			}
+
+		}
+
+		p {
+		margin: 1em 0;
+		}
+
+		.story-cite {
+		display: inline-block;
+		font-style: normal;
+
+			span {
+			border-bottom: 4px rgb(238, 49, 52) solid;
+			display: block;
+			height: 0;
+			margin: 5px 0;
+			overflow: hidden;
+			text-indent: -999em;
+			}
+
+		}
+
+	}
+
+	.story-button {
+	border: 1px #fff solid;
+	color: #fff;
+	display: inline-block;
+	font-size: 0.9rem;
+	margin: 1em 0 0;
+	padding: 0.2em 6em 0.2em 0.8em; 
+
+		@media (min-width: $gallery-break){
+
+			font-size: 1.6vw;
+
+		}
+
+		&:focus, &:hover {
+		background-color: rgba(255, 255, 255, 0.8);
+		color: rgb(42,56,93);
+		transform: scale(1.1);
+		}
+
+	}
+
+}
+
+.story-loading {
+display: none;
+
+	&.active {
+	display: block;
+	}
+
+}
+
+#story-load-more {
+background-image: image-url("story-load-more.jpg");
+background-size: cover;
+padding: 4%;
+text-align: center;
+}
+
+.story-load-button {
+background-color: #fff;
+border: 1px #ccc solid;
+border-radius: 10px;
+color: rgb(30, 138, 231);
+font-weight: bold;
+padding: 1em;
+transition: all 0.1s linear;
+
+	&:focus, &:hover {
+	transform: scale(1.2);
+	}
+
+	&:disabled {
+	opacity: 0.5;
+	}
+
+}
+
+// Profile Images
+
+.story-visible, #story-content {
+
+	&.story-inspiration {
+
+		background-image: image-url("profiles/story-inspiration.jpg");
+
+		@media (min-width: $gallery-break){
+	    
+	    	background-position: $background-left-offset 20%;
+        
+    		&.active {
+    
+    			background-position: 75% 20%;	
+    
+    		}
+
+		}
+
+	}
+
+	&.story-health {
+
+		background-image: image-url("profiles/story-health.jpg");
+
+		@media (min-width: $gallery-break){
+    
+    		background-position: 70% 14%;
+    		background-size: 160%;
+    
+			&.active {
+
+        		background-position: $background-left-offset 10%; 
+	    		background-size: cover;
+		
+			}
+
+		}
+
+	}
+
+	&.story-investment {
+
+		background-image: image-url("profiles/story-investment.jpg");
+
+		@media (min-width: $gallery-break){
+	    
+	    	background-position: $background-left-offset 18%;
+
+			&.active {
+        
+            	background-position: $background-left-offset 10%; 
+            
+		    }
+
+		}
+
+	}
+
+	&.story-protection {
+
+		background-image: image-url("profiles/story-protection.jpg");
+
+    	@media (min-width: $gallery-break){
+    
+        	background-position: 58% 15%;
+        	background-size: 130%;
+
+	    	&.active {
+
+        		background-position: $background-left-offset 10%; 
+	    		background-size: cover;
+		
+			}
+
+		}
+
+	}
+
+	&.story-action {
+
+		background-image: image-url("profiles/story-protection.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: $background-left-offset 15%;
+
+			&.active {
+
+            	background-position: $background-left-offset 10%; 
+		    
+		    }
+
+		}
+
+	}
+
+	&.story-authenticity {
+	
+		background-image: image-url("profiles/story-authenticity.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 78% 10%;
+        	background-size: 180%;
+
+    		&.active {
+    
+            	background-position: $background-left-offset 10%; 
+    	    	background-size: cover;
+    		
+    		}
+
+		}
+
+	}
+
+	&.story-clarity {
+	
+		background-image: image-url("profiles/story-clarity.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: $background-left-offset 25%;
+
+			&.active {
+
+            	background-position: $background-left-offset 10%; 
+		    
+		    }
+
+		}
+
+	}
+
+	&.story-connection {
+
+		background-image: image-url("profiles/story-connection.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 85% 15%;
+    		background-size: 130%;
+
+	        &.active {
+
+            	background-position: $background-left-offset 10%; 
+	        	background-size: cover; 
+	            
+	        }
+
+		}
+
+	}
+
+	&.story-detection {
+
+		background-image: image-url("profiles/story-detection.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 50% 15%;
+        	background-size: 110%;
+
+			&.active {
+
+        		background-position: $background-left-offset 10%; 
+	    		background-size: cover;
+		
+			}
+
+		}
+
+	}
+
+	&.story-elevation {
+
+		background-image: image-url("profiles/story-elevation.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+    		background-position: 80% 10%;
+    		background-size: 130%;
+
+			&.active {
+
+        		background-position: $background-left-offset 10%; 
+	    		background-size: cover;
+		
+			}
+
+		}
+
+	}
+
+	&.story-enlightenment {
+
+		background-image: image-url("profiles/story-enlightment.jpg");
+
+    	@media (min-width: $gallery-break){
+    
+    		background-position: 100% 12%;
+    		background-size: 120%;
+		
+			&.active {
+
+        		background-position: $background-left-offset 10%; 
+	    		background-size: cover;
+		
+			}
+
+		}
+
+	}
+
+	&.story-eons {
+	
+		background-image: image-url("profiles/story-eons.jpg");
+
+    	@media (min-width: $gallery-break){
+    
+    		background-position: 85% 23%;
+    		background-size: 140%;
+        
+			&.active {
+
+        		background-position: $background-left-offset 10%; 
+	    		background-size: cover;
+			
+			}
+
+		}
+
+	}
+
+	&.story-growth {
+
+		background-image: image-url("profiles/story-growth.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 75% 15%;
+        	background-size: 145%;
+			
+			&.active {
+
+            	background-position: $background-left-offset 10%; 
+    	    	background-size: cover;
+    		
+    		}
+
+		}
+
+	}
+
+	&.story-humanity {
+
+		background-image: image-url("profiles/story-humanity.jpg");
+
+    	@media (min-width: $gallery-break){
+        	
+        	background-position: $background-left-offset 25%;
+			
+			&.active {
+
+            	background-position: $background-left-offset 10%; 
+    	   
+    		}
+
+		}
+
+	}
+
+	&.story-justice {
+
+		background-image: image-url("profiles/story-justice.jpg");
+
+    	@media (min-width: $gallery-break){
+    
+    		background-position: 72% 10%;
+    		background-size: 150%;
+
+			&.active {
+
+        		background-position: $background-left-offset 10%; 
+	    		background-size: cover;
+		
+			}
+
+		}
+
+	}
+
+	&.story-momentum {
+
+		background-image: image-url("profiles/story-momentum.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 65% 12%;
+        	background-size: 170%;
+
+			&.active {
+
+				background-position: 75% 10%;
+        		background-size: cover;
+
+			}
+
+		}
+
+	}
+
+	&.story-progress {
+	
+		background-image: image-url("profiles/story-progress.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 60% 15%;
+        	background-size: 130%;
+			
+			&.active {
+
+            	background-position: $background-left-offset 10%; 
+    	    	background-size: cover;
+    		
+    		}
+
+		}
+
+	}
+
+	&.story-promise {
+
+		background-image: image-url("profiles/story-promise.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 68% 15%;
+        	background-size: 130%;
+			
+			&.active {
+
+            	background-position: $background-left-offset 10%; 
+    	    	background-size: cover;
+    		
+    		}
+	
+		}
+
+	}
+
+	&.story-purity {
+
+		background-image: image-url("profiles/story-purity.jpg");
+
+    	@media (min-width: $gallery-break){
+    
+    		background-position: $background-left-offset 25%;
+		
+			&.active {
+
+				background-position: $background-left-offset 10%; 
+	    
+			}
+
+		}
+
+	}
+
+	&.story-revelation {
+
+		background-image: image-url("profiles/story-revelation.jpg");
+
+    	@media (min-width: $gallery-break){
+    
+    		background-position: 43% 15%;
+    		background-size: 120%;
+		
+			&.active {
+
+        		background-position: $background-left-offset 10%; 
+	    		background-size: cover;
+		
+			}
+
+		}
+
+	}
+
+	&.story-safety {
+
+		background-image: image-url("profiles/story-safety.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 70% 14%;
+        	background-size: 150%;
+		
+    		&.active {
+    
+            	background-position: $background-left-offset 10%; 
+    	    	background-size: cover;
+    		
+    		}
+
+		}
+
+	}
+
+	&.story-sustainability {
+	
+		background-image: image-url("profiles/story-sustainability.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 55% 15%;
+        	background-size: 120%;
+    		
+    		&.active {
+    
+            	background-position: $background-left-offset 10%; 
+    	    	background-size: cover;
+    		
+    		}
+
+		}
+
+	}
+
+	&.story-sustenance {
+
+		background-image: image-url("profiles/story-sustenance.jpg");
+
+    	@media (min-width: $gallery-break){
+    
+    		background-position: $background-left-offset 15%;
+	    
+	    	&.active {
+        
+        		background-position: $background-left-offset 10%; 
+	    
+			}
+
+		}
+
+	}
+
+	&.story-value {
+	
+		background-image: image-url("profiles/story-value.jpg");
+
+    	@media (min-width: $gallery-break){
+        
+        	background-position: 20% 15%;
+        	background-size: 110%;
+		
+			&.active {
+
+        		background-position: $background-left-offset 10%; 
+	    		background-size: cover;
+		
+			}
+
+		}
+
+	}
+
+}
+
+// End Story Gallery (Bub-bye)
